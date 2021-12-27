@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Коллекция фильмов</title>
+</head>
+<body>
+    <div class="container">
+        <main>
+            <header>
+                <h1>Коллекция фильмов</h1>
+            </header>
+            <div class="control-panel">
+                <div class="search">
+                    <input class="search__input" type="text" placeholder="Поиск..." />
+                </div>
+                <div class="filter">
+                    <input class="filter__check" id="favorite" type="checkbox" >
+                    <label for="favorite">Показать Избранные</label>
+                </div>
+            </div>
+            <div class="control-panel sorting">
+                <h3 class="sorting__title">Сортировать по:</h3>
+                <button id="rating" class="button button_checked">Рейтингу</button>
+                <button id="releaseDate" class="button">Дате релиза</button>
+                <button id="boxOffice" class="button">Бюджету</button>
+            </div>
+            <div class="film-list">
+                
+            </div>
+        </main>
+    </div>
+    <template id="card-template">
+        <div class="card">
+            <div class="card__header card-header">
+                <img class="card-header__image" src="./images/posters/jurassic-world.jpg" width="265" height="390"/>
+            </div>
+            <h2 class="card-header__title">Jurassic World: Fallen Kingdom</h2>
+            <div class="card__body">
+                <div class="film-info film-info__rating">
+                    <p class="film-info__title">Рейтинг</p>
+                    <p class="film-info__text">7</p>
+                </div>
+                <div class="film-info film-info__release-date">
+                    <p class="film-info__title">Дата релиза</p>
+                    <p class="film-info__text">06-06-2020</p>
+                </div>
+                <div class="film-info film-info__director">
+                    <p class="film-info__title">Режисcер</p>
+                    <p class="film-info__text">J.A. Bayona</p>
+                </div>
+                <div class="film-info film-info__box-office">
+                    <p class="film-info__title">Бюджет</p>
+                    <p class="film-info__text">$417,719,760</p>
+                </div>
+                <div class="film-info film-info__plot">
+                    <p class="film-info__title">Сюжет</p>
+                    <p class="film-info__text"> Several years after the demise of Jurassic World, a volcanic eruption threatens the remaining dinosaurs on the island of Isla Nublar. Claire Dearing, the former park manager and founder of the Dinosaur Protection Group, recruits Owen Grady to help prevent the extinction of the dinosaurs once again.</p>
+                </div>
+            </div>
+            <div class="card__footer">
+                <button class="card__button button button__icon button_add">
+                    <svg class="button__icon-svg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path fill="#f0f0ea" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </template>
+</body>
+<script src="main.js"></script>
+</html>
+
+
+
+
+
