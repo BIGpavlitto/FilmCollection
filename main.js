@@ -27,10 +27,10 @@ function getFilms(){
 
 //Token generation
 getRequest();
-//Films getting
+//Films retrieval
 getFilms();
 
-//
+//Cards registration
 function generateCardsInDom(filmDatabase){
     let cardFromTemplate = document.querySelector('#card-template');
     let card = cardFromTemplate.content;   
@@ -97,7 +97,7 @@ function generateCardsInDom(filmDatabase){
     }
 }
 
-//button events
+//Button events
 let ratingButton = document.querySelector('#rating');
 let releaseDateButton = document.querySelector('#releaseDate');
 let boxOfficeButton = document.querySelector('#boxOffice');
@@ -136,7 +136,7 @@ boxOfficeButton.addEventListener('click', () => {
 
 })
 
-//sorting by rating
+//Sorting by rating
 function sortByRating(){
 
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
@@ -158,7 +158,7 @@ function sortByRating(){
     }
 }
 
-//sorting by release date
+//Sorting by release date
 function sortByReleaseDate(){
     
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
@@ -181,7 +181,7 @@ function sortByReleaseDate(){
 }
 
 
-//sorting by budget
+//Sorting by budget
 function sortByBudget(){
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
     
