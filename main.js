@@ -120,6 +120,8 @@ releaseDateButton.addEventListener('click', () => {
         boxOfficeButton.classList.toggle('button_checked')
     }
     releaseDateButton.classList.toggle('button_checked');
+
+    sortByReleaseDate();
 })
 
 boxOfficeButton.addEventListener('click', () => {
@@ -129,6 +131,9 @@ boxOfficeButton.addEventListener('click', () => {
         releaseDateButton.classList.toggle('button_checked')
     }
     boxOfficeButton.classList.toggle('button_checked');
+
+    sortByBudget();
+
 })
 
 //sorting by rating
@@ -141,19 +146,67 @@ function sortByRating(){
         for (let i = 0; i < innerDivs.length; i++) {
             for (let j = 0; j < innerDivs.length - i - 1; j++) {
                 if(Number(innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3)) > Number(innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3))){
-                    let temp = innerDivs[j+1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML;
-                    innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML = innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML;
-                    innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML = temp;
+                    let temp = innerDivs[j + 1].innerHTML;
+                    innerDivs[j + 1].innerHTML = innerDivs[j].innerHTML;
+                    innerDivs[j].innerHTML = temp;
                 }
             }
         }
+    }else if(!ratingButton.classList.contains('button_checked')){
+        document.querySelector('.film-list').innerHTML = '';
+        getFilms();
     }
-
-    //hiding initial filmlist
-    /* for (let i = 0; i < innerDivs.length; i++) {
-        innerDivs[i].style.display = 'none';
-    } */
 }
+
+//sorting by release date
+function sortByReleaseDate(){
+    
+    let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
+    
+    if(releaseDateButton.classList.contains('button_checked') && document.querySelector('.film-list').hasChildNodes()){
+
+        for (let i = 0; i < innerDivs.length; i++) {
+            for (let j = 0; j < innerDivs.length - i - 1; j++) {
+               if(Date.parse(innerDivs[j + 1].querySelector('.film-info__release-date').getElementsByTagName('p')[1].innerHTML) > Date.parse(innerDivs[j].querySelector('.film-info__release-date').getElementsByTagName('p')[1].innerHTML)){
+                    let temp = innerDivs[j + 1].innerHTML;
+                    innerDivs[j + 1].innerHTML = innerDivs[j].innerHTML;
+                    innerDivs[j].innerHTML = temp;
+               }
+            }
+        }
+    }else if(!releaseDateButton.classList.contains('button_checked')){
+        document.querySelector('.film-list').innerHTML = '';
+        getFilms();
+    }
+}
+
+
+//sorting by budget
+function sortByBudget(){
+    let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
+    
+    if(boxOfficeButton.classList.contains('button_checked') && document.querySelector('.film-list').hasChildNodes()){
+
+        for (let i = 0; i < innerDivs.length; i++) {
+            for (let j = 0; j < innerDivs.length - i - 1; j++) {
+               if(Number(innerDivs[j + 1].querySelector('.film-info__box-office').getElementsByTagName('p')[1].innerHTML.slice(1).replace(/,/g, "")) > Number(innerDivs[j].querySelector('.film-info__box-office').getElementsByTagName('p')[1].innerHTML.slice(1).replace(/,/g, ""))){
+                    let temp = innerDivs[j + 1].innerHTML;
+                    innerDivs[j + 1].innerHTML = innerDivs[j].innerHTML;
+                    innerDivs[j].innerHTML = temp;
+               }
+            }
+        }
+    }else if(!boxOfficeButton.classList.contains('button_checked')){
+        document.querySelector('.film-list').innerHTML = '';
+        getFilms();
+    }
+}
+
+
+
+
+
+
 
 
 
