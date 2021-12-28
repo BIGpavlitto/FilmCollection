@@ -50,38 +50,111 @@ function generateCardsInDom(filmDatabase){
         clonedCard.querySelector('.card-header__image').src = image;
 
          //release retrival
-        clonedCard.querySelector('.film-info__release-date').querySelector('.film-info__text').innerHTML = releaseDate;
+        if(releaseDate === null){
+            clonedCard.querySelector('.film-info__release-date').querySelector('.film-info__text').innerHTML = 'N/A';
+        }else{
+            clonedCard.querySelector('.film-info__release-date').querySelector('.film-info__text').innerHTML = releaseDate;
+        }
 
         //rating retrieval
-        clonedCard.querySelector('.film-info__rating').querySelector('.film-info__text').innerHTML = rating;
+        if(rating === null){
+            clonedCard.querySelector('.film-info__rating').querySelector('.film-info__text').innerHTML = 0;
+        }else{
+            clonedCard.querySelector('.film-info__rating').querySelector('.film-info__text').innerHTML = rating;
+        }
 
          //director retrieval
-         clonedCard.querySelector('.film-info__director').querySelector('.film-info__text').innerHTML = filmmaker;
-
+         if(filmmaker === null){
+            clonedCard.querySelector('.film-info__director').querySelector('.film-info__text').innerHTML = 'N/A';
+         }else{
+            clonedCard.querySelector('.film-info__director').querySelector('.film-info__text').innerHTML = filmmaker;
+         }
+        
          //plot retrieval
-         clonedCard.querySelector('.film-info__plot').querySelector('.film-info__text').innerHTML = plot;
-
+         //text length limitation in plot
+         if(plot === null){
+            clonedCard.querySelector('.film-info__plot').querySelector('.film-info__text').innerHTML = 'N/A';
+         }else{
+            if(plot.length > 140){
+                let tersedText = plot.slice(0,137) + '...';
+                clonedCard.querySelector('.film-info__plot').querySelector('.film-info__text').innerHTML = tersedText;
+            }else{
+               clonedCard.querySelector('.film-info__plot').querySelector('.film-info__text').innerHTML = plot;
+            }
+         }
+         
          //boxOffice retrieval
-         clonedCard.querySelector('.film-info__box-office').querySelector('.film-info__text').innerHTML = budget;
+         if(budget === null){
+            clonedCard.querySelector('.film-info__box-office').querySelector('.film-info__text').innerHTML = 0;
+         }else{
+            clonedCard.querySelector('.film-info__box-office').querySelector('.film-info__text').innerHTML = budget;
+         }
 
          //header retrieval
          clonedCard.querySelector('.card-header__title').innerHTML = header;
 
-
-
-
-        /* //text length limitation
-        let filmInfo = clonedCard.querySelector('.film-info__plot');
-        let pElement = filmInfo.querySelector('film-info__text');
-
-        if(pElement.innerHTML.length > 137){
-            let tersedText = pElement.innerHTML.slice(0,137) + '...';
-            pElement.innerHTML = '';
-            pElement.innerHTML = tersedText;
-        } */
         filmList.appendChild(clonedCard);
     }
 }
+
+//button events
+let ratingButton = document.querySelector('#rating');
+let releaseDateButton = document.querySelector('#releaseDate');
+let boxOfficeButton = document.querySelector('#boxOffice');
+
+ratingButton.addEventListener('click', () => {
+    if(releaseDateButton.classList.contains('button_checked')){
+        releaseDateButton.classList.toggle('button_checked')
+    }else if(boxOfficeButton.classList.contains('button_checked')){
+        boxOfficeButton.classList.toggle('button_checked')
+    }
+    ratingButton.classList.toggle('button_checked');
+
+    sortByRating();
+})
+
+releaseDateButton.addEventListener('click', () => {
+    if(ratingButton.classList.contains('button_checked')){
+        ratingButton.classList.toggle('button_checked')
+    }else if(boxOfficeButton.classList.contains('button_checked')){
+        boxOfficeButton.classList.toggle('button_checked')
+    }
+    releaseDateButton.classList.toggle('button_checked');
+})
+
+boxOfficeButton.addEventListener('click', () => {
+    if(ratingButton.classList.contains('button_checked')){
+        ratingButton.classList.toggle('button_checked')
+    }else if(releaseDateButton.classList.contains('button_checked')){
+        releaseDateButton.classList.toggle('button_checked')
+    }
+    boxOfficeButton.classList.toggle('button_checked');
+})
+
+//sorting by rating
+function sortByRating(){
+
+    let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
+
+    if(ratingButton.classList.contains('button_checked') && document.querySelector('.film-list').hasChildNodes()){
+    
+        for (let i = 0; i < innerDivs.length; i++) {
+            for (let j = 0; j < innerDivs.length - i - 1; j++) {
+                if(Number(innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3)) > Number(innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3))){
+                    let temp = innerDivs[j+1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML;
+                    innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML = innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML;
+                    innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML = temp;
+                }
+            }
+        }
+    }
+
+    //hiding initial filmlist
+    /* for (let i = 0; i < innerDivs.length; i++) {
+        innerDivs[i].style.display = 'none';
+    } */
+}
+
 
 
 
