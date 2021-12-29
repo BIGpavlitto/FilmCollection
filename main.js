@@ -110,7 +110,6 @@ ratingButton.addEventListener('click', () => {
         boxOfficeButton.classList.toggle('button_checked')
     }
     ratingButton.classList.toggle('button_checked');
-
     sortByRating();
 })
 
@@ -121,7 +120,6 @@ releaseDateButton.addEventListener('click', () => {
         boxOfficeButton.classList.toggle('button_checked')
     }
     releaseDateButton.classList.toggle('button_checked');
-
     sortByReleaseDate();
 })
 
@@ -132,7 +130,6 @@ boxOfficeButton.addEventListener('click', () => {
         releaseDateButton.classList.toggle('button_checked')
     }
     boxOfficeButton.classList.toggle('button_checked');
-
     sortByBudget();
 })
 
@@ -281,8 +278,6 @@ function searchLaunch(){
             releaseDateButton.disabled = false;
             document.querySelector('.film-list').removeChild(document.querySelector('.film-list').getElementsByClassName('auxiliary')[0]);
         }
-
-
     })
 }
 
