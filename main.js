@@ -16,8 +16,10 @@ function getFilms(){
         let textData = xhttp.response;  //text data received  
         objData = JSON.parse(textData);
         let arrayOfFilms = objData[Object.keys(objData)[0]];
+
         generateCardsInDom(arrayOfFilms);
         searchLaunch();
+        addToFavourite();
     }
     xhttp.open('GET', 'https://fe08-films.herokuapp.com/films', true);
     xhttp.setRequestHeader('Autorization', `Beare ${sessionStorage.getItem('tokenValue')}`);
@@ -96,12 +98,28 @@ function generateCardsInDom(filmDatabase){
 
         filmList.appendChild(clonedCard);
     }
+
+    //looping through localstorage's key(s)
+    let arrayOfcardsFav = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);  //string
+        let cardNumberFav = key.slice(9);
+        arrayOfcardsFav.push(cardNumberFav);
+    }
+
+    if(arrayOfcardsFav.length != 0){
+        let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
+        for (let i = 0; i < arrayOfcardsFav.length; i++) {
+            innerDivs[arrayOfcardsFav[i]].style.display = 'none';
+        }    
+    }
 }
 
 //Button events
 let ratingButton = document.querySelector('#rating');
 let releaseDateButton = document.querySelector('#releaseDate');
 let boxOfficeButton = document.querySelector('#boxOffice');
+let inputFavButton = document.querySelector('.filter__check');
 
 ratingButton.addEventListener('click', () => {
     if(releaseDateButton.classList.contains('button_checked')){
@@ -133,37 +151,96 @@ boxOfficeButton.addEventListener('click', () => {
     sortByBudget();
 })
 
+inputFavButton.addEventListener('click', () => {
+    let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
+    let arrayOfcardsFav = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);  //string
+        let cardNumberFav = key.slice(9);
+        arrayOfcardsFav.push(cardNumberFav);
+    }
+    if(inputFavButton.checked == true && arrayOfcardsFav.length != 0){
+        for (let i = 0; i < innerDivs.length; i++) {
+            innerDivs[i].style.display = 'none';
+        }
+        for (let i = 0; i < arrayOfcardsFav.length; i++) {
+            innerDivs[arrayOfcardsFav[i]].style.display = 'grid';
+        }  
+    }else{
+        for (let i = 0; i < innerDivs.length; i++) {
+            innerDivs[i].style.display = 'grid';
+        }
+        for (let i = 0; i < arrayOfcardsFav.length; i++) {
+            innerDivs[arrayOfcardsFav[i]].style.display = 'none';
+        }  
+    }
+})
+
 //Sorting by rating
 function sortByRating(){
 
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
     let inValidDivs = [];
+    let inValidDivsFav = [];
 
     if(ratingButton.classList.contains('button_checked') && document.querySelector('.film-list').hasChildNodes()){
     
-        //removal of N/A dates values
-        for (let i = 0, j = 0; i < innerDivs.length; i++) {
-            if(innerDivs[i].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML === 'N/A' || Number(innerDivs[i].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML) === 0){
-                inValidDivs[j++] = innerDivs[i];
-                document.querySelector('.film-list').removeChild(innerDivs[i]);
-            }
-        }
-        
-        //looping through rest elements
-        for (let i = 0; i < innerDivs.length - 1; i++) {
-            for (let j = 0; j < innerDivs.length - i - 1; j++) {
-                if(Number(innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3)) > Number(innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3))){
-                    let temp = innerDivs[j + 1].innerHTML;
-                    innerDivs[j + 1].innerHTML = innerDivs[j].innerHTML;
-                    innerDivs[j].innerHTML = temp;
+        if(inputFavButton.checked != true){
+            //removal of N/A dates values
+            for (let i = 0, j = 0; i < innerDivs.length; i++) {
+                if(innerDivs[i].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML === 'N/A' || Number(innerDivs[i].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML) === 0){
+                    inValidDivs[j++] = innerDivs[i];
+                    document.querySelector('.film-list').removeChild(innerDivs[i]);
                 }
             }
-        }
+        
+            //looping through rest elements
+            for (let i = 0; i < innerDivs.length - 1; i++) {
+                for (let j = 0; j < innerDivs.length - i - 1; j++) {
+                    if(Number(innerDivs[j + 1].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3)) > Number(innerDivs[j].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3))){
+                     let temp = innerDivs[j + 1].innerHTML;
+                        innerDivs[j + 1].innerHTML = innerDivs[j].innerHTML;
+                        innerDivs[j].innerHTML = temp;
+                    }
+                }
+            }
 
-        //adding removed elements to the end 
-        for (let i = 0; i < inValidDivs.length; i++) {
-            document.querySelector('.film-list').appendChild(inValidDivs[i]);
-        }
+            //adding removed elements to the end 
+            for (let i = 0; i < inValidDivs.length; i++) {
+                document.querySelector('.film-list').appendChild(inValidDivs[i]);
+            }
+        }else{
+            let arrayOfcardsFav = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);  //string
+                let cardNumberFav = key.slice(9);
+                arrayOfcardsFav.push(cardNumberFav);
+            }
+            
+             //removal of N/A dates values
+             for (let i = 0, j = 0; i < arrayOfcardsFav.length; i++) {
+                if(innerDivs[arrayOfcardsFav[i]].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML === 'N/A' || Number(innerDivs[arrayOfcardsFav[i]].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML) === 0){
+                    inValidDivsFav[j++] = innerDivs[arrayOfcardsFav[i]];
+                    document.querySelector('.film-list').removeChild(innerDivs[arrayOfcardsFav[i]]);
+                }
+            }
+        
+            //looping through rest elements
+            for (let i = 0; i < arrayOfcardsFav.length - 1; i++) {
+                for (let j = 0; j < arrayOfcardsFav.length - i - 1; j++) {
+                    if(Number(innerDivs[arrayOfcardsFav[j + 1]].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3)) > Number(innerDivs[arrayOfcardsFav[j]].querySelector('.film-info__rating').getElementsByTagName('p')[1].innerHTML.slice(0,3))){
+                     let temp = innerDivs[arrayOfcardsFav[j + 1]].innerHTML;
+                        innerDivs[arrayOfcardsFav[j+ 1]].innerHTML = innerDivs[arrayOfcardsFav[j]].innerHTML;
+                        innerDivs[arrayOfcardsFav[j]].innerHTML = temp;
+                    }
+                }
+            }
+
+            //adding removed elements to the end 
+            for (let i = 0; i < inValidDivs.length; i++) {
+                document.querySelector('.film-list').appendChild(inValidDivsFav[i]);
+            }
+        }    
     }else if(!ratingButton.classList.contains('button_checked')){
         document.querySelector('.film-list').innerHTML = '';
         getFilms();
@@ -207,7 +284,6 @@ function sortByReleaseDate(){
     }
 }
 
-
 //Sorting by budget
 function sortByBudget(){
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
@@ -243,7 +319,6 @@ function sortByBudget(){
         getFilms();
     }
 }
-
 
 //Search bar setup
 function searchLaunch(){
@@ -281,10 +356,22 @@ function searchLaunch(){
     })
 }
 
+//Adding chosen film to favorites
+function addToFavourite(){
+    let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
 
-
-
-
+    //adding event on button to every filmcard
+    for (let i = 0; i < innerDivs.length; i++) {
+        let button = innerDivs[i].getElementsByClassName('card__button')[0];
+        button.addEventListener('click', (event) => {
+            let target = event.target;
+            if(target.closest('.card__button')){
+                localStorage.setItem('filmCard_' + i, innerDivs[i].innerHTML);
+                innerDivs[i].style.display = 'none';       
+            }
+        }) 
+    } 
+}
 
 
 
