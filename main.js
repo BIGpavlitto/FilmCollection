@@ -99,12 +99,19 @@ function generateCardsInDom(filmDatabase){
         filmList.appendChild(clonedCard);
     }
 
-    //looping through localstorage's key(s)
+    //Looping through localstorage's key(s)
     let arrayOfcardsFav = [];
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);  //string
         let cardNumberFav = key.slice(9);
         arrayOfcardsFav.push(cardNumberFav);
+    }
+
+    //Checkbox disabled/enabled switch
+    if(Object.keys(localStorage).length == 0){
+        inputFavButton.closest('.filter').style.display = 'none';
+    }else{
+        inputFavButton.closest('.filter').style.display = 'block';
     }
 
     if(arrayOfcardsFav.length != 0){
@@ -160,15 +167,33 @@ inputFavButton.addEventListener('click', () => {
         arrayOfcardsFav.push(cardNumberFav);
     }
     if(inputFavButton.checked == true && arrayOfcardsFav.length != 0){
+
+        ratingButton.disabled = true;
+        boxOfficeButton.disabled = true;
+        releaseDateButton.disabled = true;
+        ratingButton.classList.add('buttonNoHover');
+        boxOfficeButton.classList.add('buttonNoHover');
+        releaseDateButton.classList.add('buttonNoHover');
+
         for (let i = 0; i < innerDivs.length; i++) {
             innerDivs[i].style.display = 'none';
         }
         for (let i = 0; i < arrayOfcardsFav.length; i++) {
             innerDivs[arrayOfcardsFav[i]].style.display = 'grid';
+            innerDivs[arrayOfcardsFav[i]].getElementsByClassName('card__button')[0].style.display = 'none';
         }  
     }else{
+        
+        ratingButton.disabled = false;
+        boxOfficeButton.disabled = false;
+        releaseDateButton.disabled = false;
+        ratingButton.classList.remove('buttonNoHover');
+        boxOfficeButton.classList.remove('buttonNoHover');
+        releaseDateButton.classList.remove('buttonNoHover');
+
         for (let i = 0; i < innerDivs.length; i++) {
             innerDivs[i].style.display = 'grid';
+            innerDivs[i].getElementsByClassName('card__button')[0].style.display = 'block';
         }
         for (let i = 0; i < arrayOfcardsFav.length; i++) {
             innerDivs[arrayOfcardsFav[i]].style.display = 'none';
@@ -367,8 +392,10 @@ function addToFavourite(){
             let target = event.target;
             if(target.closest('.card__button')){
                 localStorage.setItem('filmCard_' + i, innerDivs[i].innerHTML);
-                innerDivs[i].style.display = 'none';       
-            }
+                innerDivs[i].style.display = 'none';    
+                
+                inputFavButton.closest('.filter').style.display = 'block';
+            }  
         }) 
     } 
 }

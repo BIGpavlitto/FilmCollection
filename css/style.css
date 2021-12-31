@@ -148,6 +148,11 @@ grid-template: auto 1fr auto auto / 1fr;
   margin-right: 5px;
 }
 
+.buttonNoHover{
+  pointer-events: none;
+  color: grey;
+}
+
 .button:hover {
   border-color: #64588d;
 }
