@@ -191,7 +191,25 @@ inputFavButton.addEventListener('click', () => {
                 if(target.closest('.card__button')){
                     localStorage.removeItem('filmCard_' + arrayOfcardsFav[i]);
                     innerDivs[arrayOfcardsFav[i]].style.display = 'none';    
-                }  
+                }
+                if(localStorage.length == 0){
+                    ratingButton.disabled = false;
+                    boxOfficeButton.disabled = false;
+                    releaseDateButton.disabled = false;
+                    ratingButton.classList.remove('buttonNoHover');
+                    boxOfficeButton.classList.remove('buttonNoHover');
+                    releaseDateButton.classList.remove('buttonNoHover');
+
+                    for (let i = 0; i < innerDivs.length; i++) {
+                        innerDivs[i].style.display = 'grid';
+                        innerDivs[i].getElementsByClassName('card__button')[0].classList.remove('button_remove');
+                        innerDivs[i].getElementsByClassName('card__button')[0].classList.add('button_add');
+                    }
+                    for (let i = 0; i < arrayOfcardsFav.length; i++) {
+                        innerDivs[arrayOfcardsFav[i]].style.display = 'none';
+                    }  
+                    inputFavButton.closest('.filter').style.display = 'none';
+                }
             }) 
         } 
     }else{
