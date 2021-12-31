@@ -49,32 +49,32 @@ function generateCardsInDom(filmDatabase){
         let budget = filmDatabase[i].BoxOffice;
         let header = filmDatabase[i].Title;
 
-        //image retrival
+        //Image retrival
         clonedCard.querySelector('.card-header__image').src = image;
 
-         //release retrival
+         //Release retrival
         if(releaseDate === null){
             clonedCard.querySelector('.film-info__release-date').querySelector('.film-info__text').innerHTML = 'N/A';
         }else{
             clonedCard.querySelector('.film-info__release-date').querySelector('.film-info__text').innerHTML = releaseDate;
         }
 
-        //rating retrieval
+        //Rating retrieval
         if(rating === null){
             clonedCard.querySelector('.film-info__rating').querySelector('.film-info__text').innerHTML = 0;
         }else{
             clonedCard.querySelector('.film-info__rating').querySelector('.film-info__text').innerHTML = rating;
         }
 
-         //director retrieval
+         //Director retrieval
          if(filmmaker === null){
             clonedCard.querySelector('.film-info__director').querySelector('.film-info__text').innerHTML = 'N/A';
          }else{
             clonedCard.querySelector('.film-info__director').querySelector('.film-info__text').innerHTML = filmmaker;
          }
         
-         //plot retrieval
-         //text length limitation in plot
+         //Plot retrieval
+         //Text length limitation in plot
          if(plot === null){
             clonedCard.querySelector('.film-info__plot').querySelector('.film-info__text').innerHTML = 'N/A';
          }else{
@@ -86,14 +86,14 @@ function generateCardsInDom(filmDatabase){
             }
          }
          
-         //boxOffice retrieval
+         //BoxOffice retrieval
          if(budget === null){
             clonedCard.querySelector('.film-info__box-office').querySelector('.film-info__text').innerHTML = 0;
          }else{
             clonedCard.querySelector('.film-info__box-office').querySelector('.film-info__text').innerHTML = budget;
          }
 
-         //header retrieval
+         //Header retrieval
          clonedCard.querySelector('.card-header__title').innerHTML = header;
 
         filmList.appendChild(clonedCard);
@@ -161,6 +161,7 @@ boxOfficeButton.addEventListener('click', () => {
 inputFavButton.addEventListener('click', () => {
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
     let arrayOfcardsFav = [];
+
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key(i);  //string
         let cardNumberFav = key.slice(9);
@@ -178,10 +179,21 @@ inputFavButton.addEventListener('click', () => {
         for (let i = 0; i < innerDivs.length; i++) {
             innerDivs[i].style.display = 'none';
         }
+
+        //Adding event on remove button to every filmcard in favorites
         for (let i = 0; i < arrayOfcardsFav.length; i++) {
+            let button = innerDivs[arrayOfcardsFav[i]].getElementsByClassName('card__button')[0];
             innerDivs[arrayOfcardsFav[i]].style.display = 'grid';
-            innerDivs[arrayOfcardsFav[i]].getElementsByClassName('card__button')[0].style.display = 'none';
-        }  
+            button.classList.add('button_remove');
+            button.classList.remove('button_add');
+            button.addEventListener('click', (event) => {
+                let target = event.target;
+                if(target.closest('.card__button')){
+                    localStorage.removeItem('filmCard_' + arrayOfcardsFav[i]);
+                    innerDivs[arrayOfcardsFav[i]].style.display = 'none';    
+                }  
+            }) 
+        } 
     }else{
         
         ratingButton.disabled = false;
@@ -193,7 +205,8 @@ inputFavButton.addEventListener('click', () => {
 
         for (let i = 0; i < innerDivs.length; i++) {
             innerDivs[i].style.display = 'grid';
-            innerDivs[i].getElementsByClassName('card__button')[0].style.display = 'block';
+            innerDivs[i].getElementsByClassName('card__button')[0].classList.remove('button_remove');
+            innerDivs[i].getElementsByClassName('card__button')[0].classList.add('button_add');
         }
         for (let i = 0; i < arrayOfcardsFav.length; i++) {
             innerDivs[arrayOfcardsFav[i]].style.display = 'none';
@@ -385,7 +398,7 @@ function searchLaunch(){
 function addToFavourite(){
     let innerDivs = document.querySelector('.film-list').getElementsByClassName('card');
 
-    //adding event on button to every filmcard
+    //Adding event on button to every filmcard
     for (let i = 0; i < innerDivs.length; i++) {
         let button = innerDivs[i].getElementsByClassName('card__button')[0];
         button.addEventListener('click', (event) => {
@@ -399,6 +412,4 @@ function addToFavourite(){
         }) 
     } 
 }
-
-
 
