@@ -328,6 +328,10 @@ grid-template: auto 1fr auto auto / 1fr;
   top: 2px;
 }
 
+.filter_remove{
+  display: none;
+}
+
 .filter__check {
   position: absolute;
   z-index: -1;
